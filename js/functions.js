@@ -3,15 +3,15 @@ function stringLenght (string, maxLen){
 }
 
 function checkPolindrom (string) {
-  let normalized = string.replaceAll(" ", "").toLowerCase();
+  const normalized = string.replaceAll(" ", "").toLowerCase();
   return normalized === normalized.split("").reverse().join("");
 }
 
 function findNumbers (str) {
-  let string = str.toString();
+  const string = str.toString();
   let numbers = '';
-  for (let char of string) {
-    let num = parseInt(char, 10);
+  for (const char of string) {
+    const num = parseInt(char, 10);
     if (!Number.isNaN(num)) {
       numbers += num;
     }
