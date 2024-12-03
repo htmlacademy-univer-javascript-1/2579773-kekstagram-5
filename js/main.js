@@ -42,7 +42,7 @@ const getRandomArrayElement = (elements) => elements[getRandomInteger(0, element
 const createComment = (index) => ({
   id: index,
   avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-  message: getRandomArrayElement(MESSAGE),
+  message: Array.from({length:getRandomInteger(1,2)}, () => getRandomArrayElement(MESSAGE)).join("\n"),
   name: getRandomArrayElement(NAMES),
 });
 
@@ -55,7 +55,7 @@ const createCommets = () => {
   return comments;
 };
 
-const createPost = (index) => ({
+const createPost = (element, index) => ({
   id: index,
   url: `photos/${index}.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
@@ -63,9 +63,6 @@ const createPost = (index) => ({
   comment: createCommets(),
 });
 
-const allPosts = [];
-for (let index = 1; index <= 25; index++) {
-  allPosts.push(createPost(index));
-}
+const allPosts = Array.from({length:25},createPost);
 
 console.log(allPosts);
