@@ -30,4 +30,6 @@ const DESCRIPTION = [
   "На прогулке",
 ];
 
-export {NAMES, MESSAGE, DESCRIPTION};
+const POST_AMOUNT = 25;
+
+export {NAMES, MESSAGE, DESCRIPTION, POST_AMOUNT};
