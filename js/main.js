@@ -1,2 +1,5 @@
-import './util.js';
-import './data.js';
+import {createPost} from './data.js';
+
+const allPosts = Array.from({length:25},createPost);
+
+console.log(allPosts);

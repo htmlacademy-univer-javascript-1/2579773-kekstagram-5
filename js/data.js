@@ -25,8 +25,4 @@ const createPost = (element, index) => ({
   comment: createCommets(),
 });
 
-const allPosts = Array.from({length:25},createPost);
-
-console.log(allPosts);
-
 export {createPost};
