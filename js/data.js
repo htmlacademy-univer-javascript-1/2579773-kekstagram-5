@@ -19,7 +19,7 @@ const createCommets = () => {
 
 const createPost = (element, index) => ({
   id: index,
-  url: `photos/${index}.jpg`,
+  url: `photos/${index + 1}.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
   likes: getRandomInteger(15, 200),
   comment: createCommets(),
