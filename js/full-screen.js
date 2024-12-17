@@ -18,17 +18,25 @@ function openFullPicture (post){
   commentsCount.textContent = post.comment.length;
   socialCaption.textContent = post.description;
 
-  const comments = socialComments.querySelectorAll('.social__comment');
+  socialComments.textContent = '';
 
-  post.comment.forEach((comment, index) => {
-    if (comments[index]) {
-      const avatar = comments[index].querySelector('.social__picture');
-      const text = comments[index].querySelector('.social__text');
+  post.comment.forEach((comment) => {
+    const commentListItem = document.createElement('li');
+    commentListItem.classList.add('social__comment');
+    const commentImg = document.createElement('img');
+    commentImg.classList.add('social__picture');
+    const commentText = document.createElement('p');
+    commentText.classList.add('social__text');
 
-      avatar.src = comment.avatar;
-      avatar.alt = comment.name;
-      text.textContent = comment.message;
-    }
+    commentImg.src = comment.avatar;
+    commentImg.alt = comment.name;
+    commentText.textContent = comment.message;
+    commentImg.width = 35;
+    commentImg.height = 35;
+
+    socialComments.appendChild(commentListItem);
+    commentListItem.appendChild(commentImg);
+    commentListItem.appendChild(commentText);
   });
 
   socialCommentCount.classList.add('hidden');
