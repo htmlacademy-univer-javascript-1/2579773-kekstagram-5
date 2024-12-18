@@ -38,9 +38,10 @@ function showCommentsLoader (comments, post) {
   }
 }
 
-socialComments.textContent = '';
-
 function showComments (post) {
+  socialComments.textContent = '';
+  currentComments = 0;
+
   if (post.comment.length === 0) {
     socialComments.textContent = '';
     socialCommentCount.textContent = '0 из 0 комментариев';
@@ -48,6 +49,18 @@ function showComments (post) {
     return;
   }
 
+  const visibleComments = Math.min(post.comment.length, 5);
+  for (let i = currentComments; i < visibleComments; i++) {
+    createComment(post.comment[i]);
+  }
+
+  currentComments = visibleComments;
+  socialCommentCount.textContent = `${currentComments} из ${post.comment.length} комментариев`;
+
+  showCommentsLoader(currentComments, post);
+}
+
+function addMoreComments (post) {
   const moreComments = Math.min(currentComments + 5, post.comment.length);
   for (let i = currentComments; i < moreComments; i++) {
     createComment(post.comment[i]);
@@ -55,7 +68,6 @@ function showComments (post) {
 
   currentComments = moreComments;
   socialCommentCount.textContent = `${currentComments} из ${post.comment.length} комментариев`;
-
   showCommentsLoader(currentComments, post);
 }
 
@@ -69,22 +81,28 @@ function openFullPicture (post){
 
   currentComments = 0;
   showComments(post);
-  commentsLoader.onclick = () => showComments(post);
+  commentsLoader.onclick = () => addMoreComments(post);
 
   document.body.classList.add('modal-open');
 
   document.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      bigPicture.classList.add('hidden');
-      document.body.classList.remove('modal-open');
+      closeFullPicture();
     }
   });
 }
 
-closeButton.addEventListener('click', () => {
+function closeFullPicture() {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
+  socialComments.textContent = '';
+  currentComments = 0;
+  commentsLoader.classList.remove('hidden');
+}
+
+closeButton.addEventListener('click', () => {
+  closeFullPicture();
 });
 
 export {openFullPicture};
