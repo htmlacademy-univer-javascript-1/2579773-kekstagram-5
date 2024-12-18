@@ -9,7 +9,7 @@ const socialCaption = bigPicture.querySelector('.social__caption');
 const socialCommentCount = bigPicture.querySelector('.social__comment-count');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
 const closeButton = document.querySelector('.big-picture__cancel');
-let currentComments = 0;
+let currentComments;
 
 function createComment (comment) {
   const commentListItem = document.createElement('li');
@@ -30,6 +30,14 @@ function createComment (comment) {
   commentListItem.appendChild(commentText);
 }
 
+function showCommentsLoader (comments, post) {
+  if (comments >= post.comment.length) {
+    commentsLoader.classList.add('hidden');
+  } else {
+    commentsLoader.classList.remove('hidden');
+  }
+}
+
 socialComments.textContent = '';
 
 function showComments (post) {
@@ -48,11 +56,7 @@ function showComments (post) {
   currentComments = moreComments;
   socialCommentCount.textContent = `${currentComments} из ${post.comment.length} комментариев`;
 
-  if (currentComments >= post.comment.length) {
-    commentsLoader.classList.add('hidden');
-  } else {
-    commentsLoader.classList.remove('hidden');
-  }
+  showCommentsLoader(currentComments, post);
 }
 
 function openFullPicture (post){
