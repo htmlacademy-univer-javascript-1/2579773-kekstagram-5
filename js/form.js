@@ -13,7 +13,7 @@ const pristine = new Pristine(postForm, {
 });
 
 function validateComment (value) {
-  return value.length <= 5;
+  return value.length <= 140;
 }
 
 pristine.addValidator(
@@ -30,6 +30,15 @@ function validateHashtags (value) {
     if (tag && !/^#[^\s#]+$/i.test(tag)) {
       return false;
     }
+  }
+  return true;
+}
+
+function validateDublicates (value) {
+  const hashtags = value.trim().split(' ');
+
+  for (let i = 0; i < hashtags.length; i++) {
+    const tag = hashtags[i].toLowerCase();
     if (hashtags.slice(0, i).includes(tag)) {
       return false;
     }
@@ -40,12 +49,20 @@ function validateHashtags (value) {
 pristine.addValidator(
   textHashtags,
   validateHashtags,
-  'Неправильный формат хэштэгов.'
+  'Введён невалидный хэш-тег.'
+);
+
+pristine.addValidator(
+  textHashtags,
+  validateDublicates,
+  'Хэш-теги повторяются.'
 );
 
 postForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  if (pristine.validate()) {
+    postForm.submit();
+  }
 });
 
 function openModal () {
