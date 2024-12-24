@@ -1,4 +1,5 @@
 import {renderAllPosts} from './rendering.js';
-import './form.js';
+import {addUploadListeners} from './form.js';
 
 renderAllPosts();
+addUploadListeners();

@@ -1,4 +1,5 @@
 import {isEscapeKey} from './util.js';
+import {openSuccessModal, openErrorModal} from './message-modals.js';
 
 const postForm = document.querySelector('.img-upload__form');
 const imgUploadInput = document.querySelector('.img-upload__input');
@@ -61,7 +62,9 @@ pristine.addValidator(
 postForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
-    postForm.submit();
+    openSuccessModal();
+  } else {
+    openErrorModal();
   }
 });
 
@@ -69,12 +72,15 @@ function openModal () {
   imgUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
-  document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      closeModal();
-    }
-  });
+  document.addEventListener('keydown', clickEscapeKeyModal);
+}
+
+function clickEscapeKeyModal (evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    closeModal();
+  }
 }
 
 function closeModal() {
@@ -83,10 +89,14 @@ function closeModal() {
   postForm.reset();
 }
 
-imgUploadCancel.addEventListener('click', () => {
-  closeModal();
-});
+function addUploadListeners () {
+  imgUploadCancel.addEventListener('click', () => {
+    closeModal();
+  });
 
-imgUploadInput.addEventListener('change', () => {
-  openModal();
-});
+  imgUploadInput.addEventListener('change', () => {
+    openModal();
+  });
+}
+
+export {closeModal, clickEscapeKeyModal, addUploadListeners};
