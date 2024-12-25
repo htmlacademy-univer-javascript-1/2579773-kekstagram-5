@@ -29,7 +29,6 @@ function validateHashtags (value) {
   for (let i = 0; i < hashtags.length; i++) {
     const tag = hashtags[i].toLowerCase();
     if (tag && !/^#[^\s#]+$/i.test(tag)) {
-      pristine.errorText = 'Введён невалидный хэш-тег.';
       return false;
     }
   }
@@ -42,7 +41,6 @@ function validateDublicates (value) {
   for (let i = 0; i < hashtags.length; i++) {
     const tag = hashtags[i].toLowerCase();
     if (hashtags.slice(0, i).includes(tag)) {
-      pristine.errorText = 'Хэш-теги повторяются.';
       return false;
     }
   }
@@ -51,17 +49,14 @@ function validateDublicates (value) {
 
 pristine.addValidator(
   textHashtags,
-  (value) => {
-    if (!validateHashtags(value)) {
-      return false;
-    }
-    if (!validateDublicates(value)) {
-      return false;
-    }
+  validateHashtags,
+  'Введён невалидный хэш-тег.'
+);
 
-    return true;
-  },
-  () => pristine.errorText
+pristine.addValidator(
+  textHashtags,
+  validateDublicates,
+  'Хэш-теги повторяются.'
 );
 
 postForm.addEventListener('submit', (evt) => {
