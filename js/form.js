@@ -29,6 +29,7 @@ function validateHashtags (value) {
   for (let i = 0; i < hashtags.length; i++) {
     const tag = hashtags[i].toLowerCase();
     if (tag && !/^#[^\s#]+$/i.test(tag)) {
+      pristine.errorText = 'Введён невалидный хэш-тег.';
       return false;
     }
   }
@@ -41,6 +42,7 @@ function validateDublicates (value) {
   for (let i = 0; i < hashtags.length; i++) {
     const tag = hashtags[i].toLowerCase();
     if (hashtags.slice(0, i).includes(tag)) {
+      pristine.errorText = 'Хэш-теги повторяются.';
       return false;
     }
   }
@@ -49,14 +51,17 @@ function validateDublicates (value) {
 
 pristine.addValidator(
   textHashtags,
-  validateHashtags,
-  'Введён невалидный хэш-тег.'
-);
+  (value) => {
+    if (!validateHashtags(value)) {
+      return false;
+    }
+    if (!validateDublicates(value)) {
+      return false;
+    }
 
-pristine.addValidator(
-  textHashtags,
-  validateDublicates,
-  'Хэш-теги повторяются.'
+    return true;
+  },
+  () => pristine.errorText
 );
 
 postForm.addEventListener('submit', (evt) => {
@@ -90,13 +95,9 @@ function closeModal() {
 }
 
 function addUploadListeners () {
-  imgUploadCancel.addEventListener('click', () => {
-    closeModal();
-  });
+  imgUploadCancel.addEventListener('click', closeModal);
 
-  imgUploadInput.addEventListener('change', () => {
-    openModal();
-  });
+  imgUploadInput.addEventListener('change', openModal);
 }
 
 export {closeModal, clickEscapeKeyModal, addUploadListeners};
