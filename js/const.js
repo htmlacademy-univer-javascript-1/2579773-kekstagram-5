@@ -32,4 +32,6 @@ const DESCRIPTION = [
 
 const POST_AMOUNT = 25;
 
-export {NAMES, MESSAGE, DESCRIPTION, POST_AMOUNT};
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
+export {NAMES, MESSAGE, DESCRIPTION, POST_AMOUNT, FILE_TYPES};
