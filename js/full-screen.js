@@ -31,7 +31,7 @@ function createComment (comment) {
 }
 
 function showCommentsLoader (comments, post) {
-  if (comments >= post.comment.length) {
+  if (comments >= post.comments.length) {
     commentsLoader.classList.add('hidden');
   } else {
     commentsLoader.classList.remove('hidden');
@@ -42,32 +42,32 @@ function showComments (post) {
   socialComments.textContent = '';
   currentComments = 0;
 
-  if (post.comment.length === 0) {
+  if (post.comments.length === 0) {
     socialComments.textContent = '';
     socialCommentCount.textContent = '0 из 0 комментариев';
     commentsLoader.classList.add('hidden');
     return;
   }
 
-  const visibleComments = Math.min(post.comment.length, 5);
+  const visibleComments = Math.min(post.comments.length, 5);
   for (let i = currentComments; i < visibleComments; i++) {
-    createComment(post.comment[i]);
+    createComment(post.comments[i]);
   }
 
   currentComments = visibleComments;
-  socialCommentCount.textContent = `${currentComments} из ${post.comment.length} комментариев`;
+  socialCommentCount.textContent = `${currentComments} из ${post.comments.length} комментариев`;
 
   showCommentsLoader(currentComments, post);
 }
 
 function addMoreComments (post) {
-  const moreComments = Math.min(currentComments + 5, post.comment.length);
+  const moreComments = Math.min(currentComments + 5, post.comments.length);
   for (let i = currentComments; i < moreComments; i++) {
-    createComment(post.comment[i]);
+    createComment(post.comments[i]);
   }
 
   currentComments = moreComments;
-  socialCommentCount.textContent = `${currentComments} из ${post.comment.length} комментариев`;
+  socialCommentCount.textContent = `${currentComments} из ${post.comments.length} комментариев`;
   showCommentsLoader(currentComments, post);
 }
 
@@ -76,7 +76,7 @@ function openFullPicture (post){
 
   bigPictureImg.src = post.url;
   likesCount.textContent = post.likes;
-  commentsCount.textContent = post.comment.length;
+  commentsCount.textContent = post.comments.length;
   socialCaption.textContent = post.description;
 
   currentComments = 0;

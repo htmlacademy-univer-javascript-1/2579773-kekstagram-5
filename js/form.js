@@ -1,5 +1,6 @@
 import {isEscapeKey} from './util.js';
 import {openSuccessModal, openErrorModal} from './message-modals.js';
+import {sendData} from './remote-server.js';
 
 const postForm = document.querySelector('.img-upload__form');
 const imgUploadInput = document.querySelector('.img-upload__input');
@@ -59,14 +60,26 @@ pristine.addValidator(
   'Хэш-теги повторяются.'
 );
 
-postForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  if (pristine.validate()) {
-    openSuccessModal();
-  } else {
-    openErrorModal();
-  }
-});
+const sendPhoto = () => {
+  postForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    if (pristine.validate()) {
+      const formData = new FormData(evt.target);
+      sendData(formData)
+        .then(() => {
+          openSuccessModal();
+          postForm.reset();
+        })
+        .catch(() => {
+          openErrorModal();
+        });
+    } else {
+      openErrorModal();
+    }
+  });
+};
+
 
 function openModal () {
   imgUploadOverlay.classList.remove('hidden');
@@ -95,4 +108,4 @@ function addUploadListeners () {
   imgUploadInput.addEventListener('change', openModal);
 }
 
-export {closeModal, clickEscapeKeyModal, addUploadListeners};
+export {closeModal, clickEscapeKeyModal, addUploadListeners, sendPhoto};
