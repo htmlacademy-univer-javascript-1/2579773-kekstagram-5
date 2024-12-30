@@ -1,3 +1,5 @@
+import {renderAllPosts} from './rendering.js';
+
 const getData = (onSuccess, onError) => () =>
   fetch("https://29.javascript.htmlacademy.pro/kekstagram/data",
     {
@@ -6,11 +8,10 @@ const getData = (onSuccess, onError) => () =>
     },
   )
     .then((response) => {
-      if (response.ok) {
-        return response.json();
+      if (!response.ok) {
+        throw new Error('Не удалось загрузить данные.');
       }
-
-      throw new Error(`${response.status} ${response.statusText}`);
+      return response.json();
     })
     .then((data) => {
       onSuccess(data);
@@ -19,7 +20,7 @@ const getData = (onSuccess, onError) => () =>
       onError(err);
     });
 
-const sendData = (body) => fetch(
+const sendData = (body, onSuccess, onError) => fetch(
   'https://29.javascript.htmlacademy.pro/kekstagram',
   {
     method: 'POST',
@@ -29,9 +30,12 @@ const sendData = (body) => fetch(
     if (!response.ok) {
       throw new Error('Не удалось отправить форму. Попробуйте ещё раз');
     }
+    return onSuccess();
   })
-  .catch(() => {
-    throw new Error('Не удалось отправить форму. Попробуйте ещё раз');
-  });
+  .catch(onError);
 
-export {getData, sendData};
+const loadPostsFromServer = getData((data) => {
+  renderAllPosts(data);
+}, console.error);
+
+export {loadPostsFromServer, sendData};

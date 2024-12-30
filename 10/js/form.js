@@ -60,26 +60,25 @@ pristine.addValidator(
   'Хэш-теги повторяются.'
 );
 
-const sendPhoto = () => {
+const setupPhotoSubmission = () => {
   postForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
-    if (pristine.validate()) {
-      const formData = new FormData(evt.target);
-      sendData(formData)
-        .then(() => {
-          openSuccessModal();
-          postForm.reset();
-        })
-        .catch(() => {
-          openErrorModal();
-        });
-    } else {
+    if (!pristine.validate()) {
       openErrorModal();
+      return;
     }
+
+    sendData(
+      new FormData(evt.target),
+      () => {
+        openSuccessModal();
+        postForm.reset();
+      },
+      openErrorModal
+    );
   });
 };
-
 
 function openModal () {
   imgUploadOverlay.classList.remove('hidden');
@@ -108,4 +107,4 @@ function addUploadListeners () {
   imgUploadInput.addEventListener('change', openModal);
 }
 
-export {closeModal, clickEscapeKeyModal, addUploadListeners, sendPhoto};
+export {closeModal, clickEscapeKeyModal, addUploadListeners, setupPhotoSubmission};
