@@ -1,6 +1,6 @@
 import {FILE_TYPES} from './const.js';
 
-function uploadPhoto () {
+function setupPhotoPreview () {
   const fileChooser = document.querySelector('.img-upload__input[type=file]');
   const preview = document.querySelector('.img-upload__preview img');
 
@@ -15,4 +15,4 @@ function uploadPhoto () {
   });
 }
 
-export {uploadPhoto};
+export {setupPhotoPreview};

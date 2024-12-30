@@ -1,7 +1,8 @@
-import {renderAllPosts} from './rendering.js';
-import {addUploadListeners} from './form.js';
-import {uploadPhoto} from './upload-photo.js';
+import {addUploadListeners, setupPhotoSubmission} from './form.js';
+import {setupPhotoPreview} from './upload-photo.js';
+import {loadPostsFromServer} from './remote-server.js';
 
-renderAllPosts();
+loadPostsFromServer();
 addUploadListeners();
-uploadPhoto();
+setupPhotoPreview();
+setupPhotoSubmission();
